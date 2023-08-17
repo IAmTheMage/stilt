@@ -2,6 +2,8 @@
 #include "iostream"
 
 #include "memory"
+#include "HasBasicMessageOperator.h"
+#include "Log.h"
 
 #ifndef CONFIG_ENV_H
 #define CONFIG_ENV_H
@@ -14,11 +16,17 @@ class ConfigEnv {
 
 
         ConfigEnv(MessageType _data) {
+            bool has_operator = has_cast_operator<MessageType>::value;
+            if(!has_operator) {
+                STILT_CRITICAL("The class needs to implement the cast operator for BasicMessage");
+            }
             this->data = std::make_shared<MessageType>(_data);
             this->_object = static_cast<BasicMessage*>(_data);
         }
 
-        ~ConfigEnv() {};
+        ~ConfigEnv() {
+            delete this->_object;
+        };
 
         void setMessageBody() {
 
