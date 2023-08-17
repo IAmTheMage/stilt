@@ -3,6 +3,7 @@
 # Lista de arquivos fonte nesta subpasta
 set(SRC_FILES
     main.cpp
+    Log.cpp
     # Adicione mais arquivos conforme necessário
 )
 
