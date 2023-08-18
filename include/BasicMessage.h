@@ -1,5 +1,8 @@
 #include "string"
 #include "iostream"
+#include "json.h"
+
+using json = nlohmann::json;
 
 #ifndef BASIC_MESSAGE_H
 #define BASIC_MESSAGE_H
@@ -27,6 +30,16 @@ class BasicMessage {
             return os;
         }
 
+        void externalJsonConverter(json (*externalJsonParser)(std::string data)) {
+
+        }
+
+        virtual json internalJsonConverter() {
+            representation["start"] = "<";
+            representation["end"] = ">";
+            representation["size"] = 16;
+        }
+
         operator BasicMessage* () {
             return this;
         }
@@ -43,10 +56,19 @@ class BasicMessage {
             return end;
         }
 
-    private:
+        virtual json getJsonRepresentation() {
+            return representation;
+        }
+
+    protected:
         char start;
         char end;
         int size;
+
+
+    
+    private:
+        json representation;
 };
 
 #endif

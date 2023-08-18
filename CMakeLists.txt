@@ -1,33 +1,28 @@
-# CMakeLists.txt na raiz do projeto
-
 cmake_minimum_required(VERSION 3.10)
 project(MQTTExample)
 
-# Define a versão do C++ usada (por exemplo, C++11)
+# Define the C++ standard version (e.g., C++11)
 set(CMAKE_CXX_STANDARD 11)
 
-# Inclui a pasta 'include' como diretório de busca de cabeçalhos
+# Include the 'include' folder as a header search directory
 include_directories(include)
 
-# Adiciona a pasta 'src' ao caminho de busca de arquivos de origem
+# Add the 'src' folder to the source file search path
 add_subdirectory(src)
 
-# Adiciona a pasta 'test' ao caminho de busca de arquivos de origem para testes
+# Add the 'test' folder to the source file search path for tests
 add_subdirectory(test)
 
-# Especifica onde o CMake deve procurar as bibliotecas
+# Specify where CMake should look for libraries
 link_directories(/usr/local/lib)
 
-# Habilita os testes no CMake
+# Enable testing in CMake
 enable_testing()
 
-# Define o executável principal e vincula as bibliotecas necessárias
+# Define the main executable and link necessary libraries
 add_executable(mqtt_example src/main.cpp src/Log.cpp)
 
-# Vincula a biblioteca Paho MQTT ao executável
-target_link_libraries(mqtt_example libpaho-mqtt3cs.so.1.3.7)
-
-# Adiciona a pasta 'include' como diretório de busca de cabeçalhos para o alvo
-target_include_directories(mqtt_example PRIVATE include)
-
-add_test(NAME cast_to_basic_message_test COMMAND cast_to_basic_message_test)
+# Add the Paho MQTT libraries
+find_package(PahoMqttCpp REQUIRED)
+target_link_libraries(mqtt_example PRIVATE PahoMqttCpp::paho-mqttpp3)
+add_test(NAME cast_to_basic_message_test COMMAND cast_to_basic_message_test_exec)

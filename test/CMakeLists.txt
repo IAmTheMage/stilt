@@ -1,13 +1,11 @@
-# CMakeLists.txt na pasta 'test'
+# CMakeLists.txt in the 'test' folder
 
-# Define o executável do teste e vincula as bibliotecas necessárias
-add_executable(cast_to_basic_message_test test_cast_to_basic_message.cpp)
+# Define the test executable and link necessary libraries
+add_executable(cast_to_basic_message_test_exec test_cast_to_basic_message.cpp)
 
-# Adiciona a pasta 'include' como diretório de busca de cabeçalhos para o teste
-target_include_directories(cast_to_basic_message_test PRIVATE ${CMAKE_SOURCE_DIR}/include)
+# Add the 'include' folder as a header search directory for the test
+target_include_directories(cast_to_basic_message_test_exec PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-# Vincula a biblioteca Paho MQTT ao teste
-target_link_libraries(cast_to_basic_message_test libpaho-mqtt3cs.so.1.3.7)
+# Link the Paho MQTT library to the test
+target_link_libraries(cast_to_basic_message_test_exec libpaho-mqtt3cs.so.1.3.7)
 
-# Adiciona um teste usando o ctest
-add_test(NAME cast_to_basic_message_test COMMAND cast_to_basic_message_test)
