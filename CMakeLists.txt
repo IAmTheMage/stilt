@@ -4,6 +4,9 @@ project(MQTTExample)
 # Define the C++ standard version (e.g., C++11)
 set(CMAKE_CXX_STANDARD 11)
 
+# Set optimization level
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+
 # Include the 'include' folder as a header search directory
 include_directories(include)
 

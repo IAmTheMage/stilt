@@ -9,9 +9,7 @@ using json = nlohmann::json;
 
 class BasicMessage {
     public:
-        BasicMessage(char start, char end, int size) {
-            this->start = start;
-            this->end = end;
+        BasicMessage(int size) {
             this->size = size;
         };
         ~BasicMessage();
@@ -20,24 +18,20 @@ class BasicMessage {
 
         virtual std::string to_string() {
             std::string composed;
-            composed.push_back(start);
-            composed.push_back(end);
             return composed;
         }
 
         friend std::ostream& operator<<(std::ostream& os, const BasicMessage& message) {
-            os << "Total message size: " << message.size << "\n" << "Start operator: " << message.start << "\n" << "End operator: " << message.end << "\n";
+            os << "Total message size: " << message.size << "\n";
             return os;
         }
 
-        void externalJsonConverter(json (*externalJsonParser)(std::string data)) {
-
-        }
-
-        virtual json internalJsonConverter() {
-            representation["start"] = "<";
-            representation["end"] = ">";
-            representation["size"] = 16;
+        operator json() const {
+            json representation;
+            representation["size"] = this->size;
+            representation["left_vel"] = this->left_vel;
+            representation["right_vel"] = this->right_vel;
+            return representation;
         }
 
         operator BasicMessage* () {
@@ -48,27 +42,20 @@ class BasicMessage {
             return *this;
         }
 
-        char getStartChar() {
-            return start;
+        void setLeftVel(int left_vel) {
+            this->left_vel = left_vel;
         }
 
-        char getEndChar() {
-            return end;
+        void setRightVel(int right_vel) {
+            this->right_vel = right_vel;
         }
 
-        virtual json getJsonRepresentation() {
-            return representation;
-        }
 
     protected:
-        char start;
-        char end;
         int size;
-
-
-    
+        int left_vel;
+        int right_vel;
     private:
-        json representation;
 };
 
 #endif

@@ -4,6 +4,8 @@
 #include "BasicMessageTrait.h"
 #include "Log.h"
 #include <stdexcept>
+#include <mutex>
+#include "thread"
 
 
 #ifndef ONE_MESSAGE_PRODUCER_H
@@ -12,7 +14,7 @@
 template<typename MessageType>
 class OneMessageProducer {
     public:
-        OneMessageProducer(std::string server_address, std::string client_id, std::string topic, MessageType message) {
+        OneMessageProducer(std::string server_address, std::string client_id, std::string topic, MessageType message) : client(server_address, client_id) {
             bool inherits = std::is_base_of<BasicMessage, MessageType>::value;
             bool is_same = std::is_same<BasicMessage, MessageType>::value;
             bool inherits_2 = std::is_base_of<BasicMessage*, MessageType>::value;
@@ -30,33 +32,36 @@ class OneMessageProducer {
             this->serverAddress = server_address;
             this->clientId = client_id;
             this->message = message;
+            mqtt::connect_options connOpts;
+            connOpts.set_clean_session(true);
+            
+            mqtt::token_ptr conntok = client.connect(connOpts);
+            conntok->wait();
         }
         void send() {
-            BasicMessage* basicM = static_cast<BasicMessage*>(this->message);
-            basicM->internalJsonConverter();
-            json representation = basicM->getJsonRepresentation();
-            std::cout << representation << std::endl;
-            // mqtt::async_client client(this->serverAddress, this->clientId);
-            // mqtt::connect_options connOpts;
-            // connOpts.set_clean_session(true);
+            BasicMessage* basicM = this->message;
+            json representation = *basicM;
+            std::string rep = representation.dump(4);
+            
+            
 
-            // mqtt::token_ptr conntok = client.connect(connOpts);
-            // conntok->wait();
+            mqtt::message_ptr pubmsg = mqtt::make_message(this->topic, rep);
+            pubmsg->set_qos(1); // Qualidade de serviço (QoS) 1 - pelo menos uma vez
 
-            // mqtt::message_ptr pubmsg = mqtt::make_message(this->topic, this->message);
-            // pubmsg->set_qos(1); // Qualidade de serviço (QoS) 1 - pelo menos uma vez
-
-            // mqtt::token_ptr pubtok = client.publish(pubmsg);
-            // pubtok->wait(); // Publicar a mensagem
+            mqtt::token_ptr pubtok = client.publish(pubmsg);
+            pubtok->wait(); // Publicar a mensagem
         }
 
-        ~OneMessageProducer();
+
+        ~OneMessageProducer() {};
     
     private:
+        mqtt::async_client client;
         MessageType message;
         std::string serverAddress;
         std::string clientId;
         std::string topic;
+        std::mutex dataMutex;
 };
 
 #endif
