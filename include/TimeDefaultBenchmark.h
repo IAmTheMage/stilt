@@ -33,7 +33,7 @@ class Benchmark {
             _save = save;
         }
 
-        virtual void execBenchmark() {
+        virtual json execBenchmark() {
             auto startTime = std::chrono::high_resolution_clock::now();
             std::chrono::seconds durationTime(duration);
             STILT_INFO("Starting Benchmark for: {} seconds", duration);
@@ -53,11 +53,16 @@ class Benchmark {
             pretty_info["sended_messages"] = iterations;
             STILT_TRACE(pretty_info.dump(4));
             STILT_INFO("Finished benchmark");
+
+            return pretty_info;
         };
         virtual void save() {};
+
+
         void setVerbose(bool _verbose) {
             verbose = _verbose;
         }
+
 
     protected:
         int duration;

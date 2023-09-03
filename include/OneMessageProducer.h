@@ -54,6 +54,10 @@ class OneMessageProducer {
 
 
         ~OneMessageProducer() {};
+
+        void setMessage(MessageType _message) {
+            this->message = _message;
+        }
     
     private:
         mqtt::async_client client;

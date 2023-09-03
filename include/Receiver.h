@@ -12,7 +12,18 @@
 
 template<typename MessageType>
 class Receiver {
+    public:
+        Receiver() {
 
+        }
+
+        void instanceMQTT() {
+            
+        }
+
+        ~Receiver() {
+
+        }
 };
 
 #endif
