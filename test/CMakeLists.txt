@@ -13,6 +13,8 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 # Defina a versão do C++ (por exemplo, C++17)
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DHIGH_PERFORMANCE")
+
 # Adicione os arquivos de teste
 add_executable(${PROJECT_NAME}
     test_benchmark_output.cpp

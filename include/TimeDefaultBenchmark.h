@@ -42,6 +42,7 @@ class Benchmark {
             OneMessageProducer<MessageType>* producer = new OneMessageProducer<MessageType>(SERVER_ADDRESS, CLIENT_ID, TOPIC, this->message);
             while (true) {
                 iterations++;
+                //STILT_INFO("FUCKOV 2");
                 auto currentTime = std::chrono::high_resolution_clock::now();
                 auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime);
                 
@@ -49,6 +50,7 @@ class Benchmark {
                     break;
                 }
                 producer->send();
+                //STILT_INFO("FUCKOV");
             }
             pretty_info["sended_messages"] = iterations;
             STILT_TRACE(pretty_info.dump(4));

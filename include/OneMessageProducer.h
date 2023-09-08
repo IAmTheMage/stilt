@@ -11,6 +11,7 @@
 #ifndef ONE_MESSAGE_PRODUCER_H
 #define ONE_MESSAGE_PRODUCER_H
 
+
 template<typename MessageType>
 class OneMessageProducer {
     public:
@@ -32,12 +33,22 @@ class OneMessageProducer {
             this->serverAddress = server_address;
             this->clientId = client_id;
             this->message = message;
+            //SimpleCallback callback;
+            //client.set_callback(callback);
+
+            // Configurar as opções de conexão
             mqtt::connect_options connOpts;
-            connOpts.set_clean_session(true);
-            
-            mqtt::token_ptr conntok = client.connect(connOpts);
-            conntok->wait();
+            connOpts.set_clean_session(false);
+            try {
+                // Conectar-se ao broker MQTT
+                mqtt::token_ptr conntok = client.connect(connOpts);
+                conntok->wait();
+            }
+            catch (const mqtt::exception& exc) {
+                std::cerr << "Erro MQTT: " << exc.what() << std::endl;
+            }
         }
+
         void send() {
             BasicMessage* basicM = this->message;
             json representation = *basicM;
@@ -53,7 +64,9 @@ class OneMessageProducer {
         }
 
 
-        ~OneMessageProducer() {};
+        ~OneMessageProducer() {
+            client.disconnect();
+        };
 
         void setMessage(MessageType _message) {
             this->message = _message;

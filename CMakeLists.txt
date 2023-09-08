@@ -4,8 +4,9 @@ project(Stilt)
 # Defina a versão do C++ (por exemplo, C++17)
 set(CMAKE_CXX_STANDARD 17)
 
+
 # Set optimization level
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DHIGH_PERFORMANCE")
 
 # Include the 'include' folder as a header search directory
 include_directories(include)
