@@ -8,7 +8,7 @@ The UFJF competition team, Rinobot, has developed the Stilt communication librar
 - [x] Write a wrapper to send one message
 - [x] Single thread multiple message queue.
 - [ ] Multithread multiple message queue
-- [ ] BSON serialization
+- [x] BSON serialization
 - [ ] Esp32 receiver
 - [ ] Esp32 sender
 - [ ] Single Thread Receiver
@@ -17,7 +17,7 @@ The UFJF competition team, Rinobot, has developed the Stilt communication librar
 ## Documentation
 
 - [Logging](#logging)
-
+- [BasicMessage](#basic-message)
 
 - ## Logging
 
@@ -38,5 +38,9 @@ Examples:
 ```c++17
     STILT_INFO("Numero enviado de mensagens = {}, numero minimo esperado: {}", repeater->getSendedMessages(), minimumSendedMessages);
 ```
+
+## Basic Message
+
+## BSON Messages
 
 This software is distributed under the AGPL (GNU Affero General Public License).s

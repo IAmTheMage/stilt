@@ -28,7 +28,6 @@ class BasicMessage {
 
         operator json() const {
             json representation;
-            representation["size"] = this->size;
             representation["left_vel"] = this->left_vel;
             representation["right_vel"] = this->right_vel;
             return representation;
