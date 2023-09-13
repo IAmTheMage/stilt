@@ -25,7 +25,7 @@ class Repeater {
 
     public:
         Repeater(std::string server, std::string clientId, std::string topic, int fps, int messageLimit = 3, 
-        LimitBreakAction breakAction = LimitBreakAction::Ignore, bool withBson = true) :
+        LimitBreakAction breakAction = LimitBreakAction::Ignore, bool withBson = false) :
             Server(server), ClientId(clientId), Topic(topic), fps(fps), isRunning(true), messageLimit(messageLimit), 
             breakAction(breakAction) {
                 this->producer = new OneMessageProducer<MessageType>(Server, ClientId, Topic, NULL, withBson);
