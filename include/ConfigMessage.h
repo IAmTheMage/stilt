@@ -6,7 +6,7 @@
 
 class ConfigMessage : public BasicMessage {
     public:
-        ConfigMessage(char start, char end, int size) : BasicMessage(start,end,size) {
+        ConfigMessage(int size) : BasicMessage(size) {
 
         }
 

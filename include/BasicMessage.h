@@ -1,14 +1,15 @@
 #include "string"
 #include "iostream"
+#include "json.h"
+
+using json = nlohmann::json;
 
 #ifndef BASIC_MESSAGE_H
 #define BASIC_MESSAGE_H
 
 class BasicMessage {
     public:
-        BasicMessage(char start, char end, int size) {
-            this->start = start;
-            this->end = end;
+        BasicMessage(int size) {
             this->size = size;
         };
         ~BasicMessage();
@@ -17,14 +18,19 @@ class BasicMessage {
 
         virtual std::string to_string() {
             std::string composed;
-            composed.push_back(start);
-            composed.push_back(end);
             return composed;
         }
 
         friend std::ostream& operator<<(std::ostream& os, const BasicMessage& message) {
-            os << "Total message size: " << message.size << "\n" << "Start operator: " << message.start << "\n" << "End operator: " << message.end << "\n";
+            os << "Total message size: " << message.size << "\n";
             return os;
+        }
+
+        operator json() const {
+            json representation;
+            representation["left_vel"] = this->left_vel;
+            representation["right_vel"] = this->right_vel;
+            return representation;
         }
 
         operator BasicMessage* () {
@@ -35,18 +41,20 @@ class BasicMessage {
             return *this;
         }
 
-        char getStartChar() {
-            return start;
+        void setLeftVel(int left_vel) {
+            this->left_vel = left_vel;
         }
 
-        char getEndChar() {
-            return end;
+        void setRightVel(int right_vel) {
+            this->right_vel = right_vel;
         }
 
-    private:
-        char start;
-        char end;
+
+    protected:
         int size;
+        int left_vel;
+        int right_vel;
+    private:
 };
 
 #endif
